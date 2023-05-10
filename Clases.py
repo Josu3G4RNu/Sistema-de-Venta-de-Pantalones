@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class Cliente:
 
     def __init__(self, nombre, address, celular):
@@ -17,10 +20,9 @@ class Cliente:
         self.nombre = input('Ingresa el nombre del cliente: ').rstrip()
         self.celular = input('Ingresa su número celular: ').rstrip()
         self.address = input('Ingresa su dirección: ').rstrip()
-        self.setDeuda()
+        self.deuda = 0
 
-    def setDeuda(self):
-        agregado = int(input('Cuanto se ha de agregar a la deuda? ').rstrip())
+    def setDeuda(self, agregado):
         self.deuda += agregado
 
 
@@ -71,8 +73,8 @@ class Proveedor:
 
 class Ventas:
 
-    def __init__(self, data, monto, pantalones: list[Pant]):
-        self.data = data
+    def __init__(self, monto, pantalones: list[Pant]):
+        self.data = datetime.now.strftime('%H:%M:%S | %d-%m-%Y')
         self.monto = monto
         self.pantalones = pantalones
 
@@ -80,7 +82,3 @@ class Ventas:
         return f'{self.data}\n' \
                f'Pantalón(es) Vendidos: {self.pantalones}\n' \
                f'Monto de Venta: ${self.monto}'
-
-    def modificarInventario(self):
-        for pant in self.pantalones:
-            pant.set_enInventario(-1)

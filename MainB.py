@@ -1,6 +1,5 @@
 from Archivo import Archivo
 from Clases import Pant, Ventas, Cliente, Proveedor
-from datetime import datetime
 
 
 class Main:
@@ -21,7 +20,7 @@ class Main:
         else:
             return None
 
-    def buscar(self, metodo: int):
+    def buscar(self, metodo: int, atributo1, atributo2 = None):
         """Realiza una búsqueda en el archivo correspondiente al parámetro método
 
         :param metodo: 1) Para Cliente,  2) Para Pantalón, 3) Para Proveedor
@@ -29,23 +28,23 @@ class Main:
         if 0 < metodo > 3 or metodo is not int:
             print('Operación inválida!')
         elif metodo == 1:
-            datos = self.__buscar(self.RegistroClientes, input("Nombre: ").rstrip(), input("Celular: ").rstrip())
+            datos = self.__buscar(self.RegistroClientes, atributo1, atributo2)
             if datos is not None:
                 return Cliente(datos[0], datos[1], datos[2])
             return datos
         elif metodo == 2:
-            datos = self.__buscar(self.Inventario, input("Modelo del pantalón: ").rstrip(), input("Talla: ").rstrip())
+            datos = self.__buscar(self.Inventario, atributo1, atributo2)
             if datos is not None:
                 return Pant(datos[0], datos[1], datos[2], datos[3])
             return datos
         elif metodo == 3:
-            datos = self.__buscar(self.RegistroProveedores, input("Nombre Proveedor: ").rstrip())
+            datos = self.__buscar(self.RegistroProveedores, atributo1, atributo2)
             if datos is not None:
                 return Proveedor(datos[0], datos[1], datos[2], datos[3])
             return datos
 
-    def registrarCliente(self):
-        registrado: Cliente = self.buscar(1)
+    def registrarCliente(self, nombre, celular):
+        registrado: Cliente = self.buscar(1, nombre, celular)
         if registrado is not None:
             print(f"El cliente ya existe.\n {registrado.__str__()}")
             op = input('Deseas modificar algún dato del mismo? (S/N): ')
@@ -60,8 +59,8 @@ class Main:
         self.RegistroClientes.añadirInfo(linea)
         print("Cliente Agregado con Éxito.")
 
-    def registrarPant(self):
-        registrado: Pant = self.buscar(2)
+    def registrarPant(self, modelo, marca):
+        registrado: Pant = self.buscar(2, modelo, marca)
         if registrado is not None:
             print(f'El pantalón ya existe.\n{registrado.__str__()}')
             op = input('Gustar agregar estos pantalones al inventario? (S/N): ')
@@ -73,12 +72,13 @@ class Main:
         modelo = input('Modelo: ').rstrip()
         talla = input('Talla: ').rstrip()
         precio = input('Precio: $').rstrip()
-        linea = f'{marca}, {modelo}, {talla}, {precio}\n'
+        enInventario = input('Cantidad de pantalones a inventariar: ')
+        linea = f'{marca}, {modelo}, {talla}, {precio}, {enInventario}\n'
         self.Inventario.añadirInfo(linea)
         print("Pantalón agregado con éxito.")
 
-    def registrarProveedor(self):
-        registrado: Proveedor = self.buscar(3)
+    def registrarProveedor(self, nombre):
+        registrado: Proveedor = self.buscar(3, nombre)
         if registrado is not None:
             print(f"El provedor ya existe.\n{registrado.__str__()}")
             op = input("Deseas modificar alguno de sus datos? (S/N): ")
@@ -94,24 +94,37 @@ class Main:
         self.RegistroProveedores.añadirInfo(linea)
         print("Proveedor Agregado Con Éxito.")
 
-    def registrarVenta(self):
-        cantidad = int(input('Ingresa cuántos pantalones se han vendido: ').rstrip())
-        pantalonesVendidos = []
+    def registrarVenta(self, pantalones: list[Pant], cliente: Cliente):
         monto = 0
-        for pant in range(cantidad):
-            pant = self.buscar(2)
-            if pant is not None:
-                pantalonesVendidos.append(pant)
-                monto += pant.precio
-                continue
-            else:
-                print("El pantalón no existe. Verifique los datos")
-                self.registrarVenta()
-        print('A continuación ha de ingresar el nombre del cliente y su celular para verificar si es deudor.')
-        deudor = self.buscar(1)
-        if deudor is not None:
-            deudor.setDeuda()
-
-        venta = Ventas(datetime.now.strftime('%H:%M:%S | %d-%m-%Y'), monto, pantalonesVendidos)
-        venta.modificarInventario()
+        for pant in pantalones:
+            pant.set_enInventario(-1)
+            monto += int(pant.precio)
+        venta = Ventas(monto, pantalones)
         self.RegistroVentas.añadirInfo(venta.__str__())
+        pago = input("El total a pagar es de: $", monto, "Ingrese la cantidad de pago: $")
+        if pago > monto:
+            print("El cambio sería: $", pago-monto)
+        else:
+            print(f'El siguiente monto {monto-pago} será añadida a la deuda del cliente {cliente.nombre}')
+            cliente.setDeuda(monto-pago)
+        print("Se ha registrado la compra!")
+
+    def __borrar(self, archivo: Archivo, atributo1, atributo2):
+        lineas = archivo.leerInfo()
+        for linea in lineas:
+            datos = linea.rsplit(", ")
+            if atributo1 == datos[0] and atributo2 == (datos[1], None):
+                lineas.remove(linea)
+                break
+            else:
+                continue
+        archivo.sobrescribirInfo(lineas)
+
+    def borrar(self, metodo, atributo1, atributo2):
+        if metodo == 1:
+            self.__borrar(self.RegistroClientes, atributo1, atributo2)
+        elif metodo == 2:
+            self.__borrar(self.Inventario, atributo1, atributo2)
+        elif metodo == 3:
+            self.__borrar(self.RegistroProveedores, atributo1, atributo2) 
+        print("El objeto ha sido eliminado del archivo.")   
