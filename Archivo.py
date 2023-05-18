@@ -3,12 +3,11 @@ class Archivo:
     def __init__(self, ruta, encabezados: str = None) -> None:
         self.ruta = ruta
         self.encabezados = encabezados
+        self.rutacsv = (ruta[0:-3]) + "csv"
+        self.rutaxml =(ruta[0:-3]) + "xml"
         try:
-            self.File = open(self.ruta, "w")
-            if self.encabezados is not None:
-                self.File.write(self.encabezados)
-            self.cerrarAchivo()
-            print("archivo creado")
+            self.File = open(self.ruta, "a")
+            self.cerrarArchivo()
         except:
             print("Problemas para crear el archivo")
 
@@ -18,11 +17,9 @@ class Archivo:
         except:
             print("Error al tratar de sobrescribir la información del archivo")
         else:
-            if self.encabezados is not None:
-                self.File.write(self.encabezados)
             for linea in datos:
                 self.File.write(linea)
-            self.cerrarAchivo()
+            self.cerrarArchivo()
 
     def añadirInfo(self, datos: str):
         try:
@@ -31,7 +28,7 @@ class Archivo:
             print("Error al tratar de añadir información al archivo")
         else:
             self.File.write(datos)
-            self.cerrarAchivo()
+            self.cerrarArchivo()
 
     def leerInfo(self) -> list[str]:
         try:
@@ -40,8 +37,15 @@ class Archivo:
             print("Error para leer la información del archivo")
         else:
             lineas = self.File.readlines()
-            self.cerrarAchivo()
+            self.cerrarArchivo()
             return lineas
 
-    def cerrarAchivo(self):
+    def cerrarArchivo(self):
         self.File.close()
+
+    def exportarCSV(self):
+        self.File = open(self.rutacsv, "w")
+        self.File.write(self.encabezados.rstrip() + "\n")
+        self.File.writelines(self.leerInfo())
+        self.cerrarArchivo()
+        
