@@ -1,84 +1,93 @@
-from datetime import datetime
+import time
 
 
 class Cliente:
-
-    def __init__(self, nombre, address, celular):
+    def __init__(self, nombre, celular, address):
         self.nombre = nombre
-        self.address = address
         self.celular = celular
-        self.deuda = 0
+        self.address = address
 
     def __str__(self):
-        return f'Nombre del Cliente: {self.nombre}\n' \
-               f'Número celular: {self.celular}\n' \
-               f'Dirección: {self.address}\n' \
-               f'Deuda: ${self.deuda}\n'
+        return (
+            f"Nombre del Cliente: {self.nombre}\n"
+            f"Número celular: {self.celular}\n"
+            f"Dirección: {self.address}\n"
+        )
 
-    def setCliente(self):
-        print("El cliente ha modificar es: \n", self.__str__())
-        self.nombre = input('Ingresa el nombre del cliente: ').rstrip()
-        self.celular = input('Ingresa su número celular: ').rstrip()
-        self.address = input('Ingresa su dirección: ').rstrip()
-        self.deuda = 0
-
-    def setDeuda(self, agregado):
-        self.deuda += agregado
+    def set_Cliente(self):
+        print("El cliente ha modificar es:\n", self.__str__())
+        self.nombre = input("Re-ingresa el nombre del cliente: ").rstrip()
+        self.celular = input("Re-ingresa su número celular: ").rstrip()
+        self.address = input("Re-ingresa su dirección: ").rstrip()
+        print("Cambios Realizados!")
+        return f"{self.nombre}, {self.celular}, {self.address}\n"
 
 
 class Pant:
-
-    def __init__(self, marca, modelo, talla, precio):
+    def __init__(self, marca, modelo, talla, precio, existencias=1):
         self.marca = marca
         self.modelo = modelo
         self.talla = talla
         self.precio = precio
-        self.enInventario = 1
+        self.enInventario = existencias
 
     def __str__(self):
-        return f'Marca: {self.marca}\n' \
-               f'Modelo: {self.modelo}\n' \
-               f'Talla: {self.talla}\n' \
-               f'Precio: ${self.precio}\n' \
-               f'Existencias en Inventario: {self.enInventario}\n'
+        return (
+            f"Marca: {self.marca}\n"
+            f"Modelo: {self.modelo}\n"
+            f"Talla: {self.talla}\n"
+            f"Precio: ${self.precio}\n"
+            f"Existencias en Inventario: {self.enInventario}"
+        )
+
+    def set_Pant(self):
+        print("El pantalón a modificar es:\n", self.__str__())
+        self.marca = input("Re-ingresa la marca del pantalón: ")
+        self.modelo = input("Re-ingresa el modelo del pantalón: ")
+        self.talla = input("Re-ingresa la talla del pantalón: ")
+        self.precio = input("Re-ingresa el precio unitario del pantalón: ")
+        self.enInventario = input("Re-ingresa cuantos pantalones hay disponibles: ")
+        print("Cambios Realizados!")
+        return f"{self.marca}, {self.modelo}, {self.talla}, {self.precio}, {self.enInventario}\n"
+
+    def set_Precio(self, precio_nuevo):
+        self.precio = precio_nuevo
 
     def set_enInventario(self, valor: int):
-        try:
-            self.enInventario += valor
-        except:
-            print("Debes ingresar un valor numérico.")
+        self.enInventario += valor
 
 
 class Proveedor:
-
-    def __init__(self, nombre, celular, correo, marcas):
+    def __init__(self, nombre, marcas, celular, correo):
         self.nombre = nombre
         self.marcas = marcas
         self.celular = celular
         self.correo = correo
 
     def __str__(self):
-        return f'Nombre del Proveedor: {self.nombre}\n' \
-               f'Marcas que maneja: {self.marcas}\n' \
-               f'Número de Contacto: {self.celular}\n' \
-               f'Correo de Contacto: {self.correo}\n'
+        return (
+            f"Nombre del Proveedor: {self.nombre}\n"
+            f"Marcas que maneja: {self.marcas}\n"
+            f"Número de Contacto: {self.celular}\n"
+            f"Correo de Contacto: {self.correo}\n"
+        )
 
-    def setProveedor(self):
-        print(f'El proveedor ha modificar es: \n {self.__str__()}')
+    def set_Proveedor(self):
+        print(f"El proveedor ha modificar es:\n{self.__str__()}")
         self.nombre = input("Re-ingresa el nombre del proveedor: ").rstrip()
-        self.marcas = input("Re-ingresa las marcas. Separadas por una (,): ").rstrip()
+        self.marcas = input("Re-ingresa las marcas. Separadas por un ( & ): ").rstrip()
         self.celular = input("Re-Ingresa el número celular: ").rstrip()
         self.correo = input("Re-Ingresa su corre electrónico: ").rstrip()
+        print("Cambios realizados con éxito!")
+        return f"{self.nombre}, {self.marcas}, {self.celular}, {self.correo}\n"
 
 
 class Ventas:
-
-    def __init__(self, monto, pantalones: list[Pant]):
-        self.data = datetime.now.strftime('%H:%M:%S | %d-%m-%Y')
+    def __init__(self, monto, pantalones):
+        self.data = time.strftime("%H:%M:%S | %d-%m-%Y")
         self.monto = monto
         self.pantalones = pantalones
 
     def __str__(self):
-        return f'{self.data}\n' \
-               f'Pantalón(es) Vendidos: {self.pantalones}\n' \
-               f'Monto de Venta: ${self.monto}'
+        return (
+            f"{self.data} -> Pantalon(es) Vendidos: {self.pantalones} | Monto de Venta: ${self.monto}\n")
