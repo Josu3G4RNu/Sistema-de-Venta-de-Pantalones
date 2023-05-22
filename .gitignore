@@ -147,6 +147,10 @@ cython_debug/
 # Archivos
 Archivos/
 ArchivosB/
+ArchivosCSV/
+ArchivosXML/
+.gitignore
+.gitattributes
 
 # PyCharm
 #  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can
