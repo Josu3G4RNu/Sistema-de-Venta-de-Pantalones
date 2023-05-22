@@ -203,10 +203,10 @@ class Main:
     def exportar(self, archivo: Archivo):
         selector = input('Selecciona como quieres exportar el archivo:\n'
                          '1) CSV\n'
-                         '2) XTML\n')
+                         '2) XML\n')
         if selector == '1':
             archivo.exportarCSV()
-        # elif selector == '2':
-        #     archivo.exportarXTML()
-        # else:
-        #     print("Seleccione una opción válida.")
+        elif selector == '2':
+            archivo.exportarXML()
+        else:
+            print("Seleccione una opción válida.")
