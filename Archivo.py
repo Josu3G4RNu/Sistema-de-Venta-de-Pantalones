@@ -1,10 +1,10 @@
 class Archivo:
 
-    def __init__(self, ruta, encabezados: str = None) -> None:
+    def __init__(self, ruta: str, encabezados: str = None) -> None:
         self.ruta = ruta
         self.encabezados = encabezados
-        self.rutacsv = (ruta[0:-3]) + "csv"
-        self.rutaxml =(ruta[0:-3]) + "xml"
+        self.rutacsv = ruta.split("/")[0] + "CSV/" + ruta.split("/")[1][0:-3] + "csv"
+        self.rutaxml = ruta.split("/")[0] + "XML/" + ruta.split("/")[1][0:-3] + "xml"
         try:
             self.File = open(self.ruta, "a")
             self.cerrarArchivo()
@@ -48,4 +48,20 @@ class Archivo:
         self.File.write(self.encabezados.rstrip() + "\n")
         self.File.writelines(self.leerInfo())
         self.cerrarArchivo()
-        
+    
+    def exportarXML(self):
+        atrs = self.encabezados.split(", ")
+        lineas = self.leerInfo()
+        self.ruta = self.ruta.split("/")[1].replace(" ", "")
+        self.File = open(self.rutaxml, "w")
+        self.File.write(f"<{self.ruta[0:-4]}>\n")
+        for e, linea in enumerate(lineas):
+            self.File.write(f"<_{str(e)}_>\n")
+            datos = linea.rstrip("\n").split(", ")
+            for i, dato in enumerate(datos):
+                self.File.write(f"<{atrs[i]}>")
+                self.File.write(f"{dato}")
+                self.File.write(f"</{atrs[i]}>\n")
+            self.File.write(f"</_{str(e)}_>\n")
+        self.File.write(f"</{self.ruta[0:-4]}>")
+        self.cerrarArchivo()
