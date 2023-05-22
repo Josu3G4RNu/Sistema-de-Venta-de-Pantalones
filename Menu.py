@@ -9,6 +9,8 @@ def menu_principal():
     
     # Crear el directorio junto a los archivos.
     Path("Archivos").mkdir(exist_ok=True)
+    Path("ArchivosCSV").mkdir(exist_ok=True)
+    Path("ArchivosXML").mkdir(exist_ok=True)
     
     # Variable que almacenará el archivo con el cual se opera
     file = None
@@ -48,12 +50,12 @@ def menu_principal():
               "3) Registro de Proveedores\n")
     
     if x == "1":
-        file = Archivo("Archivos/Registro de Clientes.txt","Nombre del Cliente, Celular, Dirección")
+        file = Archivo("Archivos/Registro de Clientes.txt","Nombre, Celular, Direccion")
         if Selector != "5" and Selector != "7":
             atr1 = input("Ingresa el nombre del cliente: ").upper()
             atr2 = input("Ingresa el número celular del cliente: ")
     elif x == "2":
-        file = Archivo("Archivos/Inventario.txt", "Marca, Modelo, Talla, Precio, En Inventario")
+        file = Archivo("Archivos/Inventario.txt", "Marca, Modelo, Talla, Precio, Disponibles")
     elif x == "3":
         file = Archivo("Archivos/Registro de Proveedores.txt", "Nombre, Marcas, Celular, Correo")
         if Selector != "5" and Selector != "7":
@@ -67,7 +69,6 @@ def menu_principal():
     if Selector == "1":
         # Función de registro
         main.registrar(file, atr1, atr2)
-        pass
     
     # Realizar un busqueda
     elif Selector == "2":
@@ -81,32 +82,26 @@ def menu_principal():
                 atr2 = input("Ingresa el modelo del pantalón: ").upper()
         # Función de búsqueda
         print(main.buscar(file, atr1, atr2))
-        pass
     
     # Actualizar registros
     elif Selector == "3":
         # Función de actualización
         main.modificar_registro(file, atr1, atr2)
-        pass
         
     # Eliminar un registro
     elif Selector == "4":
         # Función de eliminación
         main.borrar(file, atr1, atr2)
-        pass
     
     # Ver información de los archivos
     elif Selector == "5":
         # Función de información
         main.visualizar(file)
-        pass
     
     #Exportación de información
     if Selector == "7":
         #Función de exportación
-        main.exportar(file)
-        pass
-    
+        main.exportar(file)   
     
     # Salir
     else:
