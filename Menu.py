@@ -56,6 +56,9 @@ def menu_principal():
             atr2 = input("Ingresa el número celular del cliente: ")
     elif x == "2":
         file = Archivo("Archivos/Inventario.txt", "Marca, Modelo, Talla, Precio, Disponibles")
+        if Selector != "2" and Selector != "5" and Selector != "7":
+            atr1 = input("Ingresa la marca del pantalón: ").upper()
+            atr2 = input("Ingresa el modelo del pantalón: ").upper()
     elif x == "3":
         file = Archivo("Archivos/Registro de Proveedores.txt", "Nombre, Marcas, Celular, Correo")
         if Selector != "5" and Selector != "7":
@@ -99,7 +102,7 @@ def menu_principal():
         main.visualizar(file)
     
     #Exportación de información
-    if Selector == "7":
+    elif Selector == "7":
         #Función de exportación
         main.exportar(file)   
     

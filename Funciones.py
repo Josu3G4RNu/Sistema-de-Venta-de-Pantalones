@@ -89,10 +89,6 @@ class Main:
         # Variables para permitir la edición
         cadena = ""
         lineas = []
-        # Archivo sin registro
-        if lineas == []:
-            print("El archivo no existe!")
-            return
         # Búsqueda del objeto para obtener acceso a la función set.
         objeto = self.buscar(archivo, atr1, atr2)
         # Modificación del cliente
@@ -107,10 +103,14 @@ class Main:
         if archivo.ruta == "Archivos/Registro de Proveedores.txt":
             cadena = objeto.set_Proveedor()
             lineas = archivo.leerInfo()
+        # Archivo sin registros
+        if lineas == []:
+            print("El archivo no existe!")
+            return
         for i, linea in enumerate(lineas):
             datos = linea.split(", ")
             if datos[0] == atr1 and (datos[1] == atr2 or atr2 == None):
-                lineas[i] = cadena
+                lineas[i] = cadena.upper()
                 print(objeto.__str__())
                 break
         archivo.sobrescribirInfo(lineas)
@@ -132,8 +132,7 @@ class Main:
     def visualizar(self, archivo: Archivo):
         selector = input('Selecciona como quieres ver la infromación:\n'
                          '1) Jerárquica\n'
-                         '2) Tabular\n'
-                         '3) Grafica\n')
+                         '2) Tabular\n')
         lineas = archivo.leerInfo()
         # Jerárquica
         if selector == '1':
@@ -151,7 +150,7 @@ class Main:
             # Presentación de los pantalones
             if len(head) == 5:
                 print('+--------------------+--------------------+----------+---------+-------------+')
-                print('|{:<20}|{:<20}|{:<10}|${:<8}|{:<13}|'.format(head[0], head[1], head[2], head[3], head[4]))
+                print('|{:<20}|{:<20}|{:<10}|{:<8}|{:<13}|'.format(head[0], head[1], head[2], head[3], head[4]))
                 for linea in lineas:
                     datos = linea.rstrip('\n').split(', ')
                     print('+--------------------+--------------------+----------+---------+-------------+')
