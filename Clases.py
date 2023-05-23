@@ -15,7 +15,7 @@ class Cliente:
         )
 
     def set_Cliente(self):
-        print("El cliente ha modificar es:\n", self.__str__())
+        print("El cliente ha modificar es:\n" + self.__str__())
         self.nombre = input("Re-ingresa el nombre del cliente: ").rstrip()
         self.celular = input("Re-ingresa su número celular: ").rstrip()
         self.address = input("Re-ingresa su dirección: ").rstrip()
@@ -41,7 +41,7 @@ class Pant:
         )
 
     def set_Pant(self):
-        print("El pantalón a modificar es:\n", self.__str__())
+        print("El pantalón a modificar es:\n" + self.__str__())
         self.marca = input("Re-ingresa la marca del pantalón: ")
         self.modelo = input("Re-ingresa el modelo del pantalón: ")
         self.talla = input("Re-ingresa la talla del pantalón: ")
@@ -49,13 +49,6 @@ class Pant:
         self.enInventario = input("Re-ingresa cuantos pantalones hay disponibles: ")
         print("Cambios Realizados!")
         return f"{self.marca}, {self.modelo}, {self.talla}, {self.precio}, {self.enInventario}\n"
-
-    def set_Precio(self, precio_nuevo):
-        self.precio = precio_nuevo
-
-    def set_enInventario(self, valor: int):
-        self.enInventario += valor
-
 
 class Proveedor:
     def __init__(self, nombre, marcas, celular, correo):
@@ -89,5 +82,4 @@ class Ventas:
         self.pantalones = pantalones
 
     def __str__(self):
-        return (
-            f"{self.data} -> Pantalon(es) Vendidos: {self.pantalones} | Monto de Venta: ${self.monto}\n")
+        return (f"{self.data} -> Pantalon(es) Vendidos: {self.pantalones} | Monto de Venta: ${self.monto}\n")
